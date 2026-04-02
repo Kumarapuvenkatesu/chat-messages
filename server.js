@@ -6,12 +6,9 @@ const DBconnection=require('./db');
 const app = express();
 const port = process.env.PORT ;
 const appUrl = process.env.CORS_ORIGIN ;
-const ProductRoutes=require("./routes/ProductRoutes");
-const path=require('path');
-const adminRoutes=require('./routes/adminRoutes');
-const userRoutes=require('./routes/userRoutes');
-const cartRoutes=require('./routes/cartRoutes');
-const locationRoutes=require('./routes/locationRoutes');
+const employeesRoutes=require("./routes/employeeRoutes");
+const messageRoutes=require("./routes/messageRoutes");
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -22,12 +19,8 @@ app.use(cors({
 }));
 
 DBconnection();
-app.use("/admin", adminRoutes);
-app.use("/api", ProductRoutes);
-app.use("/user", userRoutes);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use("/cart", cartRoutes);
-app.use("/location", locationRoutes);
+app.use("/employees", employeesRoutes);
+app.use("/messages", messageRoutes);
 
 app.get('/get', (req, res) => {
   res.send('Hello World! Server is running');
