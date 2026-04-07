@@ -3,7 +3,8 @@ const { ref } = require('node:process');
 const messageSchema=new mongoose.Schema({
     message:{
 text:{
-    type:String,required:true
+    type:String,
+    required:true
 },
 employees:Array,
 sender:{

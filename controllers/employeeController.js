@@ -45,8 +45,23 @@ exports.login=async(req,res)=>{
 exports.getAllEmployees=async(req,res)=>{
     try {
         const {id}=req.params;
-        const employees= await employeeDetails.findByid({_id:{$ne:id}}).collect(["_id","name","email"]);
+        const employees= await employeeDetails.find({_id:{$ne:id}}).select(["_id","name","email",  "avatarImage",]);
         res.status(200).json({msg:"Successfully fetch employees",employees}); 
+    } catch (error) {
+        res.status(500).json({msg:error.message});
+    }
+}
+
+exports.setAvatar=async(req,res)=>{
+    try {
+        const userId = req.params.id;
+        const avatarImage = req.body.image;
+        const userData= await employeeDetails.findByIdAndUpdate(userId,{
+            isAvatarImageSet:true,
+            avatarImage
+        });
+        return res.status(200).json({isSet:userData.isAvatarImageSet,image:userData.avatarImage});
+        
     } catch (error) {
         res.status(500).json({msg:error.message});
     }

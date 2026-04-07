@@ -1,7 +1,7 @@
 const jwt=require("jsonwebtoken");
 require("dotenv").config();
 
-exports.userVerifyMiddleware=(req,res,next)=>{
+exports.employeeVerifyMiddleware=(req,res,next)=>{
 const token=req.headers.authorization?.split(" ")[1];
 if(!token){
     return res.status(401).json({msg:"No token provided"});

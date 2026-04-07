@@ -12,9 +12,17 @@ const employeesRegistrationSchema = new mogoose.Schema({
         type:String,
         required:true
     },
-    role:{
-        type:String,
-        default:"admin"
-    }
+     isAvatarImageSet: {
+    type: Boolean,
+    default: false,
+  },
+  avatarImage: {
+    type: String,
+    default: "",
+  },
+    // role:{
+    //     type:String,
+    //     default:"admin"
+    // }
 });
 module.exports = mogoose.model("employees", employeesRegistrationSchema);

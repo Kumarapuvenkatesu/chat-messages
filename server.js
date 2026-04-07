@@ -4,11 +4,34 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const DBconnection=require('./db');
 const app = express();
+const socket=require('socket.io');
 const port = process.env.PORT ;
 const appUrl = process.env.CORS_ORIGIN ;
 const employeesRoutes=require("./routes/employeeRoutes");
 const messageRoutes=require("./routes/messageRoutes");
 
+const io=socket(server,{
+  cors:{
+    origin:appUrl,
+    methods:["GET","POST"],
+    credentials:true
+  }
+})
+
+const onlineUsers=new Map();
+
+io.on("connection",(socket)=>{
+  console.log("A user connected: " + socket.id);
+  socket.on("add-user",(userId)=>{
+    onlineUsers.set(userId,socket.id);
+  });
+  socket.on("send-msg",(data)=>{
+    const sendUserSocket=onlineUsers.get(data.to);  
+    if(sendUserSocket){
+      socket.to(sendUserSocket).emit("msg-receive",data.message);
+    } 
+  });
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
